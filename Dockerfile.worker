@@ -1,0 +1,23 @@
+# OpenReply — worker-only image.
+#
+# The root Dockerfile builds the whole Next.js app (`npm run build`), which the
+# queue worker never needs. This image skips `next build` entirely so the
+# always-on worker host (Northflank, Railway, a VM, ...) builds in a fraction of
+# the time and memory. It keeps dev dependencies because `npm run worker` runs
+# raw TypeScript through `tsx`, and `prisma generate` needs the `prisma` CLI.
+#
+# Build:  docker build -f Dockerfile.worker -t openreply-worker .
+# Run:    docker run --env-file .env openreply-worker
+
+FROM node:20-slim
+WORKDIR /app
+ENV NODE_ENV=production
+
+COPY package.json package-lock.json ./
+RUN npm ci --include=dev
+
+COPY . .
+# Generates app/generated/prisma (gitignored). Does not touch the database.
+RUN npm run db:generate
+
+CMD ["npm", "run", "worker"]
