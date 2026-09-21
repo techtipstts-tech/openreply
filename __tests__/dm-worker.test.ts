@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { t } from "@/lib/i18n";
 
 const {
   mockPrisma,
@@ -1083,7 +1084,9 @@ describe("DM Worker — DM keyword trigger", () => {
       "ig_456",
       "commenter_999",
       expect.any(String),
-      "I'm following ✅",
+      // No label on this campaign, so the worker falls back to the built-in
+      // one, which follows the interface locale.
+      t("i'm following"),
       "followcheck:auto_789"
     );
     expect(mockSendDirectMessage).not.toHaveBeenCalled();

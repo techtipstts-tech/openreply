@@ -1,12 +1,15 @@
 import type { Prisma } from "@/app/generated/prisma/client";
 import { TRACKED_LINK_ORDER } from "@/lib/tracking/link-order";
 import { generateTrackedLinkSlug } from "@/lib/tracking/server";
+import { t } from "@/lib/i18n";
 
 // The primary button's title is stored on the campaign as `linkButtonLabel`,
 // so the primary link's own label is only a placeholder. Every later link
 // stores its button title in `label`.
 export const PRIMARY_LINK_LABEL = "Primary campaign link";
-export const DEFAULT_LINK_BUTTON_LABEL = "Open link";
+// Shown to the person receiving the DM, so it follows the interface locale
+// rather than staying English.
+export const DEFAULT_LINK_BUTTON_LABEL = t("Open link");
 
 type LinkFields = {
   // For each URL: a URL sets the link, an empty string removes it, and null or

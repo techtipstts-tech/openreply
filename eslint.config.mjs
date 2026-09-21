@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Local operator scripts, not part of the app: plain CommonJS Node run
+    // straight from disk, so the app's TypeScript/ESM rules do not apply.
+    "local-setup/**",
   ]),
 ]);
 

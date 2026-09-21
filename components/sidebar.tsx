@@ -10,15 +10,16 @@ import Link from "next/link";
 import Image from "next/image";
 import { zernioLink } from "@/lib/zernio-links";
 import { usePathname } from "next/navigation";
+import { t } from "@/lib/i18n";
 
 const navItems = [
-  { label: "Dashboard", href: "/dashboard" },
-  { label: "Overview", href: "/overview" },
-  { label: "Inbox", href: "/inbox" },
-  { label: "Campaigns", href: "/campaigns" },
-  { label: "DM Logs", href: "/logs" },
-  { label: "Settings", href: "/settings" },
-  { label: "Diagnostics", href: "/diagnostics" },
+  { label: t("Dashboard"), href: "/dashboard" },
+  { label: t("Overview"), href: "/overview" },
+  { label: t("Inbox"), href: "/inbox" },
+  { label: t("Campaigns"), href: "/campaigns" },
+  { label: t("DM Logs"), href: "/logs" },
+  { label: t("Settings"), href: "/settings" },
+  { label: t("Diagnostics"), href: "/diagnostics" },
 ];
 
 interface SidebarProps {
@@ -90,14 +91,14 @@ export default function Sidebar({
 
         <div className="px-5 py-4 border-t border-border">
           <p className="text-sm text-foreground truncate">{workspaceName}</p>
-          <p className="text-xs text-muted">Self-hosted</p>
+          <p className="text-xs text-muted">{t("Self-hosted")}</p>
           <a
             href={zernioLink({ placement: "sidebar" })}
             target="_blank"
             rel="sponsored noopener noreferrer"
             className="mt-4 flex items-center gap-3 text-xs text-muted hover:text-foreground"
           >
-            <span>Supported by</span>
+            <span>{t("Supported by")}</span>
             <Image
               src="/brand/zernio-primary.svg"
               alt="Zernio"

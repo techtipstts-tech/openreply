@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { t } from "@/lib/i18n";
 
 interface InvitationAcceptCardProps {
   token: string;
@@ -29,7 +30,7 @@ export default function InvitationAcceptCard({
       window.location.assign("/dashboard");
       return;
     }
-    setMessage(payload.error ?? "Could not accept invitation");
+    setMessage(payload.error ?? t("Could not accept invitation"));
     setBusy(false);
   }
 
@@ -39,7 +40,7 @@ export default function InvitationAcceptCard({
         href="/login"
         className="inline-flex items-center justify-center rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-white transition hover:bg-accent-hover"
       >
-        Sign in to accept
+        {t("Sign in to accept")}
       </a>
     );
   }
@@ -52,11 +53,11 @@ export default function InvitationAcceptCard({
         disabled={busy}
         className="inline-flex items-center justify-center rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-white transition hover:bg-accent-hover disabled:opacity-50"
       >
-        {busy ? "Accepting..." : "Accept invitation"}
+        {busy ? t("Accepting...") : t("Accept invitation")}
       </button>
       {message && <p className="text-sm text-error">{message}</p>}
       <p className="text-xs text-muted">
-        Use the magic link account for {invitedEmail}.
+        {t("Use the magic link account for {email}.", { email: invitedEmail })}
       </p>
     </div>
   );

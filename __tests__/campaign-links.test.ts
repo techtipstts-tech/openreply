@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import type { Prisma } from "../app/generated/prisma/client";
 import {
   buildInitialCampaignLinks,
+  DEFAULT_LINK_BUTTON_LABEL,
   syncCampaignLinks,
 } from "../lib/campaigns/links";
 
@@ -245,7 +246,11 @@ describe("syncCampaignLinks", () => {
 
     await save({ secondaryUrl: SECOND, secondaryLabel: "   " });
 
-    expect(buttons()[1]).toEqual({ position: 1, label: "Open link", destinationUrl: SECOND });
+    expect(buttons()[1]).toEqual({
+      position: 1,
+      label: DEFAULT_LINK_BUTTON_LABEL,
+      destinationUrl: SECOND,
+    });
   });
 
   it("leaves other campaigns' links alone", async () => {
@@ -282,7 +287,9 @@ describe("buildInitialCampaignLinks", () => {
         secondaryUrl: SECOND,
         secondaryLabel: null,
       })
-    ).toMatchObject([{ position: 0, label: "Open link", destinationUrl: SECOND }]);
+    ).toMatchObject([
+      { position: 0, label: DEFAULT_LINK_BUTTON_LABEL, destinationUrl: SECOND },
+    ]);
   });
 
   it("creates nothing without URLs", () => {

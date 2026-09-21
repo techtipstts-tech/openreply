@@ -4,6 +4,8 @@
  * Metric panel with label, value, and optional trend.
  */
 
+import { t } from "@/lib/i18n";
+
 interface StatCardProps {
   label: string;
   value: string | number;
@@ -18,7 +20,7 @@ export default function StatCard({ label, value, trend, trendUp }: StatCardProps
       <p className="text-2xl font-semibold text-foreground mt-1">{value}</p>
       {trend && (
         <p className={`text-xs mt-1 ${trendUp ? "text-success" : "text-error"}`}>
-          {trendUp ? "Up" : "Down"} {trend}
+          {trendUp ? t("Up") : t("Down")} {trend}
         </p>
       )}
     </div>
