@@ -201,6 +201,9 @@ model Automation {
   publicReplyEnabled Boolean @default(false)
   publicReplyMessage String?
   publicReplyMessages String[] @default([])
+  // Like the triggering comment as a courtesy. Off by default so existing
+  // campaigns keep behaving exactly as they did.
+  likeCommentEnabled Boolean @default(false)
   isActive       Boolean @default(true)
   wholeWordMatch Boolean @default(true)
   reportShareSlug    String? @unique
@@ -243,6 +246,10 @@ model DmLog {
   publicReplyDeliveryUnconfirmed Boolean @default(false)
   publicReplySentAt DateTime?
   publicReplyError  String?
+  // Same idempotency shape as the public reply: a timestamp so a retry never
+  // double-likes, and an error kept for the logs without failing the run.
+  commentLikedAt    DateTime?
+  commentLikeError  String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

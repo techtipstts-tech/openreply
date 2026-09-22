@@ -7,6 +7,7 @@ const {
   mockSendPrivateReplyWithLinkButton,
   mockSendPrivateReplyWithButton,
   mockGetUserFollowStatus,
+  mockLikeComment,
   mockSendDirectMessageWithButton,
   mockSendDirectMessage,
   mockSendDirectMessageWithLinkButton,
@@ -43,6 +44,7 @@ const {
   mockSendPrivateReplyWithLinkButton: vi.fn(),
   mockSendPrivateReplyWithButton: vi.fn(),
   mockGetUserFollowStatus: vi.fn(),
+  mockLikeComment: vi.fn(),
   mockSendDirectMessageWithButton: vi.fn(),
   mockSendDirectMessage: vi.fn(),
   mockSendDirectMessageWithLinkButton: vi.fn(),
@@ -68,6 +70,7 @@ vi.mock("@/lib/meta/client", () => ({
   sendDirectMessage: mockSendDirectMessage,
   sendDirectMessageWithLinkButton: mockSendDirectMessageWithLinkButton,
   sendCommentReply: vi.fn(),
+  likeComment: mockLikeComment,
   MetaApiError: class MetaApiError extends Error {
     code: number;
     constructor(
@@ -157,6 +160,7 @@ const mockAutomation = {
   openingDmButtonLabel: null,
   linkButtonLabel: null,
   publicReplyEnabled: false,
+  likeCommentEnabled: false,
   publicReplyMessage: null,
   publicReplyMessages: [],
   instagramAccount: {
@@ -1402,5 +1406,52 @@ describe("durable Zernio postback delivery", () => {
     } finally {
       vi.unstubAllGlobals();
     }
+  });
+});
+
+describe("comment like", () => {
+  it("likes the triggering comment when the campaign asks for it", async () => {
+    mockPrisma.automation.findMany.mockResolvedValue([
+      { ...mockAutomation, likeCommentEnabled: true },
+    ]);
+    mockLikeComment.mockResolvedValue({ liked: true });
+
+    await getProcessor()(createMockJob());
+
+    // Asserted at the Meta client layer, like the other send mocks here, so
+    // the provider wrapper's own branching stays covered rather than stubbed.
+    expect(mockLikeComment).toHaveBeenCalledWith("decrypted_token", "comment_555");
+  });
+
+  it("leaves the comment alone when the campaign does not ask", async () => {
+    await getProcessor()(createMockJob());
+    expect(mockLikeComment).not.toHaveBeenCalled();
+  });
+
+  it("does not like twice if the job is retried", async () => {
+    mockPrisma.automation.findMany.mockResolvedValue([
+      { ...mockAutomation, likeCommentEnabled: true },
+    ]);
+    mockPrisma.dmLog.findUnique.mockResolvedValue({
+      status: "PENDING",
+      commentLikedAt: new Date(),
+    });
+
+    await getProcessor()(createMockJob());
+
+    expect(mockLikeComment).not.toHaveBeenCalled();
+  });
+
+  // A like is a courtesy: losing it must never cost the DM, which is the
+  // thing the follower actually asked for.
+  it("still sends the DM when the like fails", async () => {
+    mockPrisma.automation.findMany.mockResolvedValue([
+      { ...mockAutomation, likeCommentEnabled: true },
+    ]);
+    mockLikeComment.mockRejectedValue(new Error("comment already liked"));
+
+    await getProcessor()(createMockJob());
+
+    expect(mockSendPrivateReply).toHaveBeenCalled();
   });
 });

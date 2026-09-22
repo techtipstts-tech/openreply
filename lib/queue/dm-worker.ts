@@ -18,6 +18,7 @@ import {
   RateLimitError,
   TokenExpiredError,
   getUserFollowStatus,
+  likeComment,
   sendCommentReply,
   sendDirectMessage,
   sendDirectMessageWithButton,
@@ -395,6 +396,40 @@ async function processComment(job: Job<ProcessCommentJob>): Promise<void> {
           errorMessage: null,
         },
       });
+    }
+
+    // Courtesy like on the triggering comment. Like the public reply it is
+    // decoupled from the DM, and unlike the DM it must never fail the run: a
+    // like that does not land is worth a log line, not a retry that would
+    // re-send the DM. Idempotent across retries via commentLikedAt.
+    if (automation.likeCommentEnabled && !existingLog?.commentLikedAt) {
+      try {
+        const { liked } = await likeComment({
+          context: accessToken,
+          commentId: commentId,
+        });
+        if (liked) {
+          await prisma.dmLog.update({
+            where: {
+              automationId_commentId: { automationId: automation.id, commentId },
+            },
+            data: { commentLikedAt: new Date(), commentLikeError: null },
+          });
+        }
+      } catch (error) {
+        console.error("[DM Worker] Comment like failed:", formatError(error));
+        await prisma.dmLog
+          .update({
+            where: {
+              automationId_commentId: {
+                automationId: automation.id,
+                commentId,
+              },
+            },
+            data: { commentLikeError: formatError(error) },
+          })
+          .catch(() => {});
+      }
     }
 
     // Public reply leg — decoupled from the DM and posted first so a DM failure

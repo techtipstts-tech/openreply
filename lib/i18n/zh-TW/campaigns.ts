@@ -60,6 +60,7 @@ export const campaigns: Record<string, string> = {
     "這個帳號收到的每一則私訊都會得到下面的回覆，請小心使用。",
   "A DM containing any of these words gets the same reply, no comment needed.":
     "私訊裡只要出現其中一個關鍵字，就會收到同樣的回覆，不用留言也可以。",
+  "like their comment": "順手幫對方的留言按讚",
   "reply to their comments under the post": "在貼文底下公開回覆對方的留言",
   "Sent you a DM! 📩": "私訊你囉！📩",
   "Remove reply": "刪掉這則回覆",

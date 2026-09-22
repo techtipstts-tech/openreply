@@ -45,6 +45,7 @@ const createAutomationSchema = z
     // Instagram's messaging window.
     followUpDelayMinutes: z.number().int().min(0).max(1440).optional().default(0),
     publicReplyEnabled: z.boolean().optional().default(false),
+    likeCommentEnabled: z.boolean().optional().default(false),
     publicReplyMessage: z.string().max(1000).optional().nullable(),
     publicReplyMessages: z
       .array(z.string().max(1000))
@@ -106,6 +107,7 @@ const updateAutomationSchema = z.object({
   followUpMessage: z.string().max(1000).optional().nullable(),
   followUpDelayMinutes: z.number().int().min(0).max(1440).optional(),
   publicReplyEnabled: z.boolean().optional(),
+  likeCommentEnabled: z.boolean().optional(),
   publicReplyMessage: z.string().max(1000).optional().nullable(),
   publicReplyMessages: z.array(z.string().max(1000)).max(10).optional(),
   isActive: z.boolean().optional(),
@@ -402,6 +404,7 @@ export async function POST(request: NextRequest) {
         ? parsed.data.followUpDelayMinutes
         : 0,
       publicReplyEnabled: parsed.data.publicReplyEnabled,
+      likeCommentEnabled: parsed.data.likeCommentEnabled,
       publicReplyMessages: parsed.data.publicReplyEnabled
         ? publicReplyList
         : [],

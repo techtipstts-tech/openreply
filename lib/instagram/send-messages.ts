@@ -245,6 +245,23 @@ export async function sendDirectMessageWithLinkButton({
   });
 }
 
+/**
+ * Like the comment that triggered the campaign. Meta only; Zernio exposes no
+ * like endpoint, so a Zernio-connected account silently skips this rather than
+ * failing the run for a courtesy action.
+ */
+export async function likeComment({
+  context,
+  commentId,
+}: {
+  context: InstagramContext;
+  commentId: string;
+}): Promise<{ liked: boolean }> {
+  if (context.provider !== "META") return { liked: false };
+  await meta.likeComment(context.accessToken, commentId);
+  return { liked: true };
+}
+
 export async function sendCommentReply({
   context,
   commentId,

@@ -50,6 +50,7 @@ interface LoadedCampaign {
   followUpMessage: string | null;
   followUpDelayMinutes: number | null;
   publicReplyEnabled: boolean;
+  likeCommentEnabled: boolean;
   publicReplyMessage: string | null;
   publicReplyMessages: string[];
   isActive: boolean;
@@ -161,6 +162,7 @@ export default function CampaignBuilder({ mode, campaignId }: CampaignBuilderPro
   const [dmTriggerEnabled, setDmTriggerEnabled] = useState(false);
 
   const [publicReplyEnabled, setPublicReplyEnabled] = useState(false);
+  const [likeCommentEnabled, setLikeCommentEnabled] = useState(false);
   const [publicReplyMessages, setPublicReplyMessages] = useState<string[]>([""]);
 
   const [openingDmEnabled, setOpeningDmEnabled] = useState(false);
@@ -264,6 +266,7 @@ export default function CampaignBuilder({ mode, campaignId }: CampaignBuilderPro
         setKeywordText(c.keywords.join(", "));
         setDmTriggerEnabled(c.dmTriggerEnabled ?? false);
         setPublicReplyEnabled(c.publicReplyEnabled);
+        setLikeCommentEnabled(c.likeCommentEnabled);
         setPublicReplyMessages(
           c.publicReplyMessages?.length
             ? c.publicReplyMessages
@@ -418,6 +421,7 @@ export default function CampaignBuilder({ mode, campaignId }: CampaignBuilderPro
       openingDmMessage: openingDmEnabled ? openingDmMessage : null,
       openingDmButtonLabel: openingDmEnabled ? openingDmButtonLabel : null,
       publicReplyEnabled,
+      likeCommentEnabled,
       publicReplyMessages: publicReplyEnabled
         ? publicReplyMessages.map((m) => m.trim()).filter(Boolean)
         : [],
@@ -760,6 +764,15 @@ export default function CampaignBuilder({ mode, campaignId }: CampaignBuilderPro
                   )}
             </p>
           )}
+          <div className="flex items-center justify-between rounded-lg border border-border px-3 py-2.5">
+            <span className="text-sm text-foreground">
+              {t("like their comment")}
+            </span>
+            <Toggle
+              on={likeCommentEnabled}
+              onToggle={() => setLikeCommentEnabled(!likeCommentEnabled)}
+            />
+          </div>
           <div className="flex items-center justify-between rounded-lg border border-border px-3 py-2.5">
             <span className="text-sm text-foreground">
               {t("reply to their comments under the post")}

@@ -423,6 +423,27 @@ export async function sendCommentReply(
   return handleResponse(response);
 }
 
+/**
+ * Like a comment on one of the account's own posts. Covered by
+ * `instagram_business_manage_comments`, the same permission the reply above
+ * uses, so it needs no extra review.
+ */
+export async function likeComment(
+  accessToken: string,
+  commentId: string
+): Promise<{ success: boolean }> {
+  const response = await fetch(`${instagramGraphBase()}/${commentId}/likes`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({}),
+  });
+
+  return handleResponse(response);
+}
+
 export async function getMediaComments(
   accessToken: string,
   mediaId: string
