@@ -101,7 +101,7 @@ export default function DashboardPage() {
             {" · "}
             {t("{count} contacts", { count: stats?.contactsCount ?? 0 })}
             {" · "}
-            <a href="/logs" className="text-accent hover:underline">
+            <a href="/logs" className="text-accent-ink hover:underline">
               {t("See activity")}
             </a>
           </p>

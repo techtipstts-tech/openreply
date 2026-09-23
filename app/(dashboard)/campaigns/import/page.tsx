@@ -91,21 +91,21 @@ export default function ImportCampaignsPage() {
           {t(
             "Paste a CSV with one row per campaign. Each row opens in the builder prefilled and editable, so you can review it and pick the reel before saving. Required columns are"
           )}{" "}
-          <code className="text-accent">keywords</code>{" "}
+          <code className="text-accent-ink">keywords</code>{" "}
           {t("and")}{" "}
-          <code className="text-accent">dm_message</code>
+          <code className="text-accent-ink">dm_message</code>
           {t(". Optional:")}{" "}
-          <code className="text-accent">name</code>
+          <code className="text-accent-ink">name</code>
           {"、"}
-          <code className="text-accent">public_reply</code>
+          <code className="text-accent-ink">public_reply</code>
           {"、"}
-          <code className="text-accent">tracked_url</code>
+          <code className="text-accent-ink">tracked_url</code>
           {"、"}
-          <code className="text-accent">opening_dm</code>
+          <code className="text-accent-ink">opening_dm</code>
           {"、"}
-          <code className="text-accent">opening_dm_button</code>
+          <code className="text-accent-ink">opening_dm_button</code>
           {t(". Keywords go in one cell, separated by commas. Use")}{" "}
-          <code className="text-accent">{"{link}"}</code>{" "}
+          <code className="text-accent-ink">{"{link}"}</code>{" "}
           {t("in the message to insert the tracked link.")}
         </p>
       </div>
@@ -152,7 +152,7 @@ export default function ImportCampaignsPage() {
       <div className="flex items-center gap-4">
         <button
           onClick={startImport}
-          className="px-5 py-2 rounded bg-accent text-sm font-medium text-white hover:bg-accent-hover"
+          className="px-5 py-2 rounded bg-accent text-sm font-medium text-accent-foreground hover:bg-accent-hover"
         >
           {t("Review and import")}
         </button>

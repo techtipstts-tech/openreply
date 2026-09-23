@@ -41,7 +41,7 @@ export default async function LoginPage({
               href={SETUP_DOCS_URL}
               target="_blank"
               rel="noreferrer"
-              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded bg-accent px-6 py-3.5 text-sm font-semibold text-white shadow-indigo-500/25 transition-all hover:shadow-indigo-500/30"
+              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded bg-accent px-6 py-3.5 text-sm font-semibold text-accent-foreground shadow-indigo-500/25 transition-all hover:shadow-indigo-500/30"
             >
               {t("Clone it yourself")} <span aria-hidden="true">↗</span>
             </a>
@@ -90,7 +90,7 @@ export default async function LoginPage({
         <div className="panel rounded p-8 shadow-black/40">
           {selectedTemplate && !checkEmail && (
             <div className="mb-5 border border-accent/20 bg-accent/10 p-4">
-              <p className="text-xs font-semibold uppercase tracking-wide text-accent">
+              <p className="text-xs font-semibold uppercase tracking-wide text-accent-ink">
                 {t("Template selected")}
               </p>
               <p className="mt-2 text-sm font-semibold text-foreground">
@@ -132,7 +132,7 @@ export default async function LoginPage({
 
               <button
                 type="submit"
-                className="w-full inline-flex items-center justify-center gap-2 rounded bg-accent px-6 py-3.5 text-sm font-semibold text-white shadow-indigo-500/25 transition-all hover:shadow-indigo-500/30"
+                className="w-full inline-flex items-center justify-center gap-2 rounded bg-accent px-6 py-3.5 text-sm font-semibold text-accent-foreground shadow-indigo-500/25 transition-all hover:shadow-indigo-500/30"
               >
                 {t("Email me a magic link")}
               </button>

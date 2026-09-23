@@ -1,23 +1,58 @@
 @import "tailwindcss";
 
-/* ManyChat Alternative — Design System
-   Plain and functional. No gradients, glass, glow, or animation. */
+/* 馬卡龍綠 — Macaron Mint
+   Pistachio and mint on a mint-cream ground, rounded corners throughout, and
+   Huninn (justfont 粉圓, a Taiwanese rounded typeface) for the Traditional
+   Chinese interface.
+
+   Every text-on-background pair here is checked to WCAG AA (4.5:1 or better).
+   The mint accent is too pale to carry white text, so buttons use
+   accent-foreground (dark green) and green text uses accent-ink. */
 
 @theme inline {
-  --color-background: #ffffff;
-  --color-foreground: #18181b;
-  --color-surface: #f7f7f8;
-  --color-surface-hover: #efeff1;
-  --color-border: #e4e4e7;
-  --color-border-hover: #d4d4d8;
-  --color-muted: #71717a;
-  --color-accent: #f97316;
-  --color-accent-hover: #ea580c;
-  --color-success: #16a34a;
-  --color-error: #dc2626;
-  --color-warning: #d97706;
-  --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --color-background: #f3faf5; /* mint cream ground */
+  --color-foreground: #1f3a2e; /* forest ink        11.6:1 on ground */
+  --color-surface: #ffffff; /* white cards float on the mint */
+  --color-surface-hover: #eaf7ef;
+  --color-border: #d3eedd;
+  --color-border-hover: #b5e3c6;
+  --color-muted: #557062; /* sage               5.1:1 on ground */
+  --color-accent: #8ed8ae; /* macaron mint: buttons, tints, selected states */
+  --color-accent-hover: #74cc99;
+  --color-accent-foreground: #143626; /* text on mint     7.9:1 */
+  --color-accent-ink: #1f7a53; /* green used as text  5.0:1 on ground */
+  --color-success: #1f7a53;
+  --color-error: #c2414c; /* raspberry          4.8:1 on ground */
+  --color-warning: #9a6212; /* apricot            4.8:1 on ground */
+  --font-sans:
+    var(--font-huninn), "PingFang TC", "Microsoft JhengHei", system-ui,
+    sans-serif;
   --font-mono: ui-monospace, monospace;
+
+  /* Components still reach for Tailwind's zinc greys in places. Re-point the
+     whole scale at matching-lightness sage so they sit in the palette instead
+     of reading as cold grey. Relative contrast between steps is preserved. */
+  --color-zinc-50: #f6fbf8;
+  --color-zinc-100: #eef6f1;
+  --color-zinc-200: #dcebe2;
+  --color-zinc-300: #c3d8cb;
+  --color-zinc-400: #8fa99a;
+  --color-zinc-500: #557062;
+  --color-zinc-600: #465e51;
+  --color-zinc-700: #35483e;
+  --color-zinc-800: #23312a;
+  --color-zinc-900: #17211c;
+  --color-zinc-950: #0b120e;
+}
+
+/* Softer, rounder corners: the same class names, a gentler scale. */
+@theme {
+  --radius: 0.625rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
 }
 
 html {
@@ -25,14 +60,45 @@ html {
 }
 
 body {
-  background: var(--color-background);
+  background-color: var(--color-background);
+  /* A faint pistachio polka dot, like a patisserie box. */
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgb(142 216 174 / 0.3) 1.2px,
+    transparent 0
+  );
+  background-size: 22px 22px;
   color: var(--color-foreground);
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Focus ring — visible, for keyboard users. */
+::selection {
+  background: #bfe9d0;
+  color: #143626;
+}
+
+* {
+  scrollbar-color: #b5e3c6 transparent;
+}
+
+/* A small press-in on every button so taps feel soft and bouncy. Uses
+   `transform`, which composes with Tailwind v4's separate translate/scale
+   properties rather than overriding them. */
+button:not(:disabled) {
+  transition:
+    transform 0.12s ease,
+    background-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+button:not(:disabled):active {
+  transform: translateY(1px) scale(0.98);
+}
+
+/* Focus ring — visible, for keyboard users. The mint accent is too pale to
+   read as an outline, so the ring uses the ink green. */
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-accent-ink);
   outline-offset: 2px;
 }
 
@@ -55,18 +121,15 @@ select:focus-visible {
   }
 }
 
-/* Panel — flat container. Replaces .glass / .glass-strong. */
-.panel {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-}
-
-/* Kept as no-op aliases so existing markup degrades to plain surfaces
-   instead of breaking. Prefer .panel in new code. */
+/* Panel — a white card that lifts gently off the mint ground. */
+.panel,
 .glass,
 .glass-strong {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
+  box-shadow:
+    0 1px 0 var(--color-border),
+    0 12px 28px -20px rgb(31 122 83 / 0.35);
 }
 
 .gradient-mesh {

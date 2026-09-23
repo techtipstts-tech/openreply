@@ -26,7 +26,7 @@ export default function VerifyRequestPage() {
             )}
           </p>
           <p className="mt-6 text-sm">
-            <Link href="/login" className="text-accent hover:underline">
+            <Link href="/login" className="text-accent-ink hover:underline">
               {t("Back to sign in")}
             </Link>
           </p>

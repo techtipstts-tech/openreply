@@ -30,11 +30,13 @@ export interface FollowerChartPoint {
   delta: number | null;
 }
 
-// Colors read against the light chart surface (#ffffff): the accent line clears
-// 3:1 contrast and grid/axis text match the muted/border tokens. See globals.css.
-const SERIES_COLOR = "#f97316";
-const GRID_COLOR = "#e4e4e7";
-const AXIS_TEXT = "#71717a";
+// Colors read against the white chart surface. The line uses accent-ink rather
+// than the mint accent: the mint is only ~1.7:1 on white, under the 3:1 a data
+// line needs, while accent-ink is 5.3:1. Grid and axis text match the border
+// and muted tokens. Keep these in step with globals.css.
+const SERIES_COLOR = "#1f7a53";
+const GRID_COLOR = "#d3eedd";
+const AXIS_TEXT = "#557062";
 
 function formatCompact(n: number): string {
   if (Math.abs(n) >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;

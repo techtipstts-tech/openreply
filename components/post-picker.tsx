@@ -235,7 +235,7 @@ export default function PostPicker({
               />
             )}
             {isSelected && (
-              <span className="absolute bottom-0 inset-x-0 bg-accent text-white text-xs py-1">
+              <span className="absolute bottom-0 inset-x-0 bg-accent text-accent-foreground text-xs py-1">
                 {t("Selected")}
               </span>
             )}
