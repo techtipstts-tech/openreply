@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUserId, getCurrentWorkspaceId } from "@/lib/auth";
 import { prisma } from "@/lib/db/client";
+import { htmlLang } from "@/lib/i18n";
 import {
   calculateCtr,
   normalizeTopKeywords,
@@ -168,7 +169,8 @@ export async function GET(request: NextRequest) {
     });
 
     dailyDMs.push({
-      date: dayStart.toLocaleDateString("en-US", { weekday: "short" }),
+      // Follow the interface locale: 週四 in Chinese, Thu in English.
+      date: dayStart.toLocaleDateString(htmlLang, { weekday: "short" }),
       count,
     });
   }
